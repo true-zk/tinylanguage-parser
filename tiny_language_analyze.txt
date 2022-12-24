@@ -1,0 +1,33 @@
+program->stmt_seq
+
+stmt_seq->stmt_seq stmt | stmt
+stmt->if_stmt|repeat_stmt|assign_stmt|read_stmt|write_stmt
+if_stmt->IF exp THEN stmt_seq END | IF exp THEN stmt_seq ELSE stmt_seq END
+repeat_stmt->REPEAT stmt_seq UNTIL exp
+assign_stmt->ID:=exp
+read_stmt->READ ID
+write_stmt->WRITE exp
+
+exp->simple_exp<simple_exp | simple_exp=simple_exp | simple_exp
+simple_exp->simple_exp+term | simple_exp-term | term
+term->term*factor | term/factor | factor
+factor->(exp) | NUM | ID 
+
+消除左递归 提取左因子：
+program->stmt_seq
+stmt_seq->stmt tmp
+tmp->stmt_seq|ε
+
+simple_exp-> simple_exp tmp | term
+tmp-> + term | - term
+
+
+FIRST(stmt) = IF REPEAT ID READ WRITE
+FIRST(if_stmt) = IF
+FIRST(repeat_stmt) = REPEAT
+FIRST(assign_stmt) = ID
+FIRST(read_stmt) = READ
+FIRST(write_stmt) = WRITE
+
+follow(exp) = follow(tmp) = )+ THEN + follow(repeat) + follow(assign_stmt) + follow(write_stmt)
+follow(exp) = follow(tmp) = ) THEN + follow(stmt_seq)
