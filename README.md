@@ -9,7 +9,7 @@ file structure & discription:<br>
 - parses.c parse.h  : tiny language parser: parse the input code and output a syntax tree<br>
   
 usage:<br>
- - x86<br>
+ - win<br>
   1. open a terminal in build<br>
   2. $make clean : clean build files<br>
   3. $make parse : build the tiny language parser<br>
